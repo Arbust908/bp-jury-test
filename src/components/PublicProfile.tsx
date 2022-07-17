@@ -11,13 +11,13 @@ function PublicProfile(props: Props) {
 
   return (
     <article
-      className="rounded shadow-sm mx-auto my-2 max-w-md p-4 bg-slate-200 hover:shadow-lg dark:shadow-slate-300 dark:bg-slate-800 dark:text-slate-200 space-y-2"
+      className="rounded shadow-sm mx-auto my-2 max-w-md py-4 px-6 bg-slate-200 hover:shadow-lg dark:shadow-slate-300 dark:bg-slate-800 dark:text-slate-200 space-y-2 w-220px"
     >
       {error && <p>Error: {error.message}</p>}
       {loading && <p>Loading...</p>}
       {user && <>
         <a href={user.html_url} className="hover:text-teal-600 font-bold">
-          <h2 className="flex items-center justify-center">
+          <h2 className="flex items-center justify-center gap-3">
             <img src={user.avatar_url} alt={user.name} width="32" height="32" className="rounded-full shadow" />
             <span>
               {user.name}

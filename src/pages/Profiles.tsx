@@ -9,8 +9,12 @@ function Profiles() {
   const [searchUser, setSearchUsername] = useState("Arbust908")
   const { user, loading, error } = useFetchGithubUser(searchUser)
 
+  const isUsableUser = username && username.length > 3
+
   const getUser = () => {
-    console.log("getUser")
+    if (isUsableUser) {
+      setSearchUsername(username)
+    }
   }
 
   useEffect(() => {
@@ -20,6 +24,7 @@ function Profiles() {
         const newProfiles = [...profiles]
         newProfiles.push(user)
         setProfiles(newProfiles)
+        setUsername("")
       }
     }
   }, [user])
@@ -30,12 +35,17 @@ function Profiles() {
       <section className="">
         <form className="flex flex-col gap-4 items-start max-w-sm mx-auto">
           <input className="w-full rounded border border-teal-600 border-b-2 px-4 py-2" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-          <button className="ml-auto bg-teal-400 text-slate-800 rounded-full px-4 py-2 border border-2 border-teal-700 hover:shadow-lg hover:bg-teal-300" type="button" onClick={getUser}>
+          <button
+            className={`${isUsableUser ? 'bg-teal-400 text-slate-800 border-teal-700 hover:shadow-lg hover:bg-teal-300' : 'bg-teal-500 text-slate-800 cursor-not-allowed'} ml-auto  rounded-full px-4 py-2 border border-2 `}
+            type="button"
+            onClick={getUser}
+            disabled={!isUsableUser}
+          >
             Get User
           </button>
         </form>
       </section>
-      <section className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:gird-cols-3">
+      <section className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         <h3 className="col-span-full">Tenemos { profiles.length } perfiles</h3>
         { profiles.map(profile => <PublicProfile key={profile.id} user={profile} />) }
       </section>
