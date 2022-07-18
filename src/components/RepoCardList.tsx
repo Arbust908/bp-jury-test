@@ -10,34 +10,41 @@ type Props = {
 function RepoCardList(props: Props) {
   const { repos, loading, error } = props
 
-  const loadingBox = () => {
+  const renderBox = (msgNode: React.ReactNode) => {
     return (
       <section className='flex justify-center items-center p-6 space-y-4 col-span-full'>
-        <p className='text-2xl text-teal-500 font-bold'>Loading repos...</p>
+        { msgNode }
       </section>
-    )
+    );
+  }
+  const loadingBox = () => {
+    return renderBox(<p className='text-2xl text-teal-500 font-bold'>Loading repos...</p>);
   }
   const errorBox = () => {
-    return (
-      <section className='flex justify-center items-center p-6 space-y-4 col-span-full'>
-        <p className='text-2xl text-red-500 font-bold'>{ error?.message }</p>
-      </section>
-    )
+    return renderBox(<p className='text-2xl text-red-500 font-bold'>{ error?.message }</p>);
   }
 
-  return (<>
-    {loading && !error && loadingBox()}
-    {error && errorBox()}
-    <section className='grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
-      {
-        repos && repos.length === 0 &&
-        <p className='text-center text-2xl text-gray-500 font-bold'>No repos found</p>
-      }
-      {
-        repos && repos.length && repos.map(repo => <RepoCard repo={repo} key={repo.id} />)
-      }
+  const renderList = () => {
+    if (loading) return loadingBox()
+    if (error) return errorBox()
+
+    if (repos && !!repos.length) {
+      return (<section className='grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
+        <p className='col-span-full text-sm opacity-75 text-right'>
+          {`${repos.length} repos encontrados`}
+        </p>
+        {
+           repos.map(repo => <RepoCard repo={repo} key={repo.id} />)
+        }
+      </section>)
+    }
+    // emptyBox()
+    return <section className='flex justify-center'>
+      <p className='text-center text-2xl text-gray-500 font-bold'>No repos found</p>
     </section>
-  </>)
+  }
+
+  return renderList()
 }
 
 export { RepoCardList }

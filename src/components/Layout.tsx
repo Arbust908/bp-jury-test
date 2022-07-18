@@ -9,6 +9,14 @@ type Props = {
 
 function Layout(props: Props) {
   const { children, mode, toggleMode, setPage } = props
+
+  const goToProjects = () => {
+    setPage(PAGES.PROJECTS)
+  }
+  const goToUser = () => {
+    setPage(PAGES.USER)
+  }
+
   return (
     <div className='w-full h-full bg-slate-100 dark:bg-slate-900 flex'>
       <nav className='max-w-[200px] w-full h-full bg-slate-300 dark:bg-slate-800 text-slate-800 dark:text-slate-300 px-4 py-6'>
@@ -21,10 +29,10 @@ function Layout(props: Props) {
           <i className={`${mode === 'dark' ? 'i-ic:round-wb-sunny' : 'i-ic:round-shield-moon'}`} />
         </button>
         <ul className='list-none m-0 px-0 py-2 space-y-2'>
-          <li className='cursor-pointer hover:bg-teal-500' onClick={() => {setPage(PAGES.PROJECTS)}}>
+          <li className='cursor-pointer hover:bg-teal-500 px-2 rounded font-bold hover:text-slate-100 hover:shadow' onClick={goToProjects}>
             Projectos
           </li>
-          <li className='cursor-pointer hover:bg-teal-500' onClick={() => {setPage(PAGES.USER)}}>
+          <li className='cursor-pointer hover:bg-teal-500 px-2 rounded font-bold hover:text-slate-100 hover:shadow' onClick={goToUser}>
             User
           </li>
         </ul>
