@@ -15,11 +15,10 @@ const useFetchGithubRepos = (token: string, options?: GHRepoOptions) => {
     throw new Error('username and token are required');
   }
   const [repos, setRepos] = useState<GithubRepo[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<any>(null);
 
   const getRepos = () => {
-    setLoading(true);
     try {
       const url = `https://api.github.com/user/repos${queryStringMaker(options)}`;
       fetch(url, {
@@ -30,10 +29,9 @@ const useFetchGithubRepos = (token: string, options?: GHRepoOptions) => {
       })
         .then(res => res.json())
         .then(setRepos)
+        .finally(() => setLoading(false));
     } catch (error) {
       setError(error);
-    } finally {
-      setLoading(false);
     }
   }
   
