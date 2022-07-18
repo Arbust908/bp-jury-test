@@ -1,21 +1,29 @@
-import { PAGES } from '../App'
+import { Link, useMatch, useResolvedPath } from 'react-router-dom'
 
-type Props = {
+type LayoutProps = {
   children: React.ReactNode
   mode: 'dark' | 'light',
   toggleMode: () => void,
-  setPage: (page: string) => void
+}
+type NavLinkProps = {
+  children: React.ReactNode
+  to: string
 }
 
-function Layout(props: Props) {
-  const { children, mode, toggleMode, setPage } = props
+function NavLink({ children, to }: NavLinkProps) {
+  const linkClasses = 'cursor-pointer hover:bg-teal-500 px-2 rounded font-bold hover:text-slate-100 hover:shadow w-full block'
+  const isActive = useMatch(to)
+  const selectionClasses = isActive ? 'bg-teal-500 text-slate-100' : ''
 
-  const goToProjects = () => {
-    setPage(PAGES.PROJECTS)
-  }
-  const goToUser = () => {
-    setPage(PAGES.USER)
-  }
+  return (
+    <li>
+      <Link className={`${linkClasses} ${selectionClasses}`} to={to}>
+        { children }
+      </Link>
+    </li>)
+}
+
+function Layout({ children, mode, toggleMode}: LayoutProps) {
 
   return (
     <div className='w-full h-full bg-slate-100 dark:bg-slate-900 flex'>
@@ -29,12 +37,9 @@ function Layout(props: Props) {
           <i className={`${mode === 'dark' ? 'i-ic:round-wb-sunny' : 'i-ic:round-shield-moon'}`} />
         </button>
         <ul className='list-none m-0 px-0 py-2 space-y-2'>
-          <li className='cursor-pointer hover:bg-teal-500 px-2 rounded font-bold hover:text-slate-100 hover:shadow' onClick={goToProjects}>
-            Projectos
-          </li>
-          <li className='cursor-pointer hover:bg-teal-500 px-2 rounded font-bold hover:text-slate-100 hover:shadow' onClick={goToUser}>
-            User
-          </li>
+          <NavLink to='/projects'>Projects</NavLink>
+          <NavLink to='/profiles'>Profiles</NavLink>
+          <NavLink to='/'>Home</NavLink>
         </ul>
       </nav>
       <main className='w-full h-full p-8 flex flex-col gap-4 overflow-y-scroll'>

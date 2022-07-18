@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
 import Profiles from './pages/Profiles'
 import Repos from './pages/Repos'
@@ -11,16 +12,14 @@ export const PAGES = {
 
 function App() {
   const [mode, toggleMode] = useDarkMode()
-  const [page, setPage] = useState(PAGES.PROJECTS);
 
   return (
-    <Layout mode={mode} toggleMode={toggleMode} setPage={setPage}>
-      {
-        page === PAGES.PROJECTS && <Repos />
-      }
-      {
-        page === PAGES.USER && <Profiles />
-      }
+    <Layout mode={mode} toggleMode={toggleMode}>
+      <Routes>
+        <Route path="/projects" element={<Repos />} />
+        <Route path="/profiles" element={<Profiles />} />
+        <Route path="/" element={<h1> Home </h1>} />
+      </Routes>
     </Layout>
   )
 }
