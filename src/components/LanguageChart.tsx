@@ -1,6 +1,6 @@
 import Chart from 'react-apexcharts';
 import type { Lang } from '../types';
-import { langColorMaker } from '../logic'
+  import { langColorMaker } from '../logic'
 
 
 type Props = {
@@ -11,7 +11,7 @@ function LanguageChart(props: Props) {
 
   const averagePercentage = languages.reduce((acc, lang) => acc + lang.value, 0) / languages.length;
   const newLang = languages.reduce((acc, lang) => {
-    if (lang.value <= averagePercentage) {
+    if (lang.value <= averagePercentage || lang.name === 'Others') {
       const others = acc.find(l => l.name === 'Others')
       if (others) {
         others.value += lang.value;

@@ -48,7 +48,7 @@ function RepoCard(props: Props) {
   }
   const avatarMaker = () => {
     return (
-      <div className="w-12 h-12 -top-2 -left-2 rounded-full shadow absolute bg-indigo-200 dark:bg-indigo-600 overflow-hidden">
+      <div className="w-8 h-8 -top-2 -left-2 rounded-full shadow absolute bg-indigo-200 dark:bg-indigo-600 overflow-hidden">
         <img src={repo.owner.avatar_url} alt={repo.owner.name} />
       </div>
     );
