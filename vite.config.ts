@@ -17,6 +17,20 @@ export default defineConfig({
           'vertical-align': 'middle',
           },
         })],
+      safelist: [
+        'i-logos:php',
+        'i-logos:javascript',
+        'i-logos:typescript-icon',
+        'i-logos:vue',
+        'i-logos:c-sharp',
+        'i-logos:html-5',
+        'i-logos:css-3',
+        'i-logos:rust',
+        'i-logos:perl',
+        'i-logos:hack',
+        'i-logos:c-plusplus',
+        'i-ic:round-question-mark'
+      ]
     }),
   ]
 })
