@@ -7,18 +7,10 @@ const useLanguage = (repos: GithubRepo[]) => {
   useEffect(() => {
     if (repos && repos.length) {
       const langs = repos.reduce((acc, repo) => {
-        let found = null;
-        if (repo.language) {
-          found = acc.find(lang => lang.name === repo.language)
-        } else {
-          found = acc.find(lang => lang.name === 'Others')
-        }
+        const langName = repo.language || 'Others'
+        const found = acc.find(lang => lang.name === langName)
         if (!found) {
-          const name = repo.language ? repo.language : 'Others';
-          acc.push({
-            name,
-            value: 1
-          } as Lang)
+          acc.push({ name: langName, value: 1 })
         } else {
           found.value++
         }
