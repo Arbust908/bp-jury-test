@@ -1,9 +1,9 @@
+import { useContext } from 'react';
 import { Link, useMatch, useResolvedPath } from 'react-router-dom'
+import { GlobalContext } from '../context/Global';
 
 type LayoutProps = {
   children: React.ReactNode
-  mode: 'dark' | 'light',
-  toggleMode: () => void,
 }
 type NavLinkProps = {
   children: React.ReactNode
@@ -23,23 +23,27 @@ function NavLink({ children, to }: NavLinkProps) {
     </li>)
 }
 
-function Layout({ children, mode, toggleMode}: LayoutProps) {
+function Layout({ children}: LayoutProps) {
+  const { mode, toggleMode } = useContext(GlobalContext);
 
   return (
     <div className='w-full h-full bg-slate-100 dark:bg-slate-900 flex'>
       <nav className='max-w-[200px] w-full h-full bg-slate-300 dark:bg-slate-800 text-slate-800 dark:text-slate-300 px-4 py-6'>
-        <h1 className='text-2xl font-black uppercase text-teal-600'>Jury</h1>
+        <Link to="/">
+          <h1 className='text-2xl font-black uppercase text-teal-600'>
+            Jury
+          </h1>
+        </Link>
         <button
           onClick={toggleMode}
           className="border-none bg-transparent text-slate-600 dark:text-slate-400 cursor-pointer text-4xl"
         >
           <i className={`${mode === 'dark' ? 'i-ic:round-toggle-off' : 'i-ic:round-toggle-on'}`} />
-          <i className={`${mode === 'dark' ? 'i-ic:round-wb-sunny' : 'i-ic:round-shield-moon'}`} />
+          <i className={`${mode === 'dark' ? 'i-ic:round-wb-sunny' : 'i-ic:round-nightlight'}`} />
         </button>
         <ul className='list-none m-0 px-0 py-2 space-y-2'>
           <NavLink to='/projects'>Projects</NavLink>
           <NavLink to='/profiles'>Profiles</NavLink>
-          <NavLink to='/'>Home</NavLink>
         </ul>
       </nav>
       <main className='w-full h-full p-8 flex flex-col gap-4 overflow-y-scroll'>

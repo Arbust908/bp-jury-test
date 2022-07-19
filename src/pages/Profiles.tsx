@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react"
-import { GithubUser } from "../types"
+import { useEffect, useState, useContext } from "react"
+
 import { useFetchGithubUser } from "../hooks/useFetchGithubUser"
 import PublicProfile from "../components/PublicProfile"
+import { GlobalContext } from "../context/Global"
 
 function Profiles() {
-  const [profiles, setProfiles] = useState<GithubUser[]>([])
+  const { users, setUsers } = useContext(GlobalContext)
   const [username, setUsername] = useState("")
   const [searchUser, setSearchUsername] = useState("Arbust908")
   const { user, loading, error } = useFetchGithubUser(searchUser)
@@ -19,11 +20,11 @@ function Profiles() {
 
   useEffect(() => {
     if (user) {
-      const isNewUser = profiles.filter(profile => profile.id === user.id).length === 0
+      const isNewUser = users.filter(profile => profile.id === user.id).length === 0
       if (isNewUser) {
-        const newProfiles = [...profiles]
+        const newProfiles = [...users]
         newProfiles.push(user)
-        setProfiles(newProfiles)
+        setUsers(newProfiles)
         setUsername("")
       }
     }
@@ -46,8 +47,8 @@ function Profiles() {
         </form>
       </section>
       <section className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        <h3 className="col-span-full">Tenemos { profiles.length } perfiles</h3>
-        { profiles.map(profile => <PublicProfile key={profile.id} user={profile} />) }
+        <h3 className="col-span-full">Tenemos { users.length } perfiles</h3>
+        { users.map(profile => <PublicProfile key={profile.id} user={profile} />) }
       </section>
     </>
   )
