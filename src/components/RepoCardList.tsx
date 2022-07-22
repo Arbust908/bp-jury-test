@@ -23,11 +23,12 @@ function RepoCardList(props: Props) {
   const errorBox = () => {
     return renderBox(<p className='text-2xl text-red-500 font-bold'>{ error?.message }</p>);
   }
+  const emptyBox = () => {
+    return renderBox(<p className='text-2xl text-gray-500 font-bold'>No repos found</p>);
+  }
 
   const renderList = () => {
-    if (loading) return loadingBox()
     if (error) return errorBox()
-
     if (repos && !!repos.length) {
       return (<section className='grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
         <p className='col-span-full text-sm opacity-75 text-right'>
@@ -37,11 +38,11 @@ function RepoCardList(props: Props) {
            repos.map(repo => <RepoCard repo={repo} key={repo.id} />)
         }
       </section>)
+    } else if (loading) {
+      return loadingBox()
+    } else {
+      return emptyBox()
     }
-    // emptyBox()
-    return <section className='flex justify-center'>
-      <p className='text-center text-2xl text-gray-500 font-bold'>No repos found</p>
-    </section>
   }
 
   return renderList()

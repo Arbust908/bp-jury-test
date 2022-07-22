@@ -17,8 +17,10 @@ const useFetchGithubRepos = (token: string, options?: GHRepoOptions) => {
   const [repos, setRepos] = useState<GithubRepo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<any>(null);
+  console.log('useFetchGithubRepos');
 
   const getRepos = () => {
+    console.log('getRepos');
     try {
       const url = `https://api.github.com/user/repos${queryStringMaker(options)}`;
       fetch(url, {
@@ -34,12 +36,8 @@ const useFetchGithubRepos = (token: string, options?: GHRepoOptions) => {
       setError(error);
     }
   }
-  
-  useEffect(() => {
-    getRepos();
-  }, []);
 
-  return { repos, loading, error };
+  return { repos, loading, error, getRepos };
 }
 
 export { useFetchGithubRepos };

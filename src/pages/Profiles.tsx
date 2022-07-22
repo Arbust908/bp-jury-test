@@ -47,7 +47,7 @@ function Profiles() {
         </form>
       </section>
       <section className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        <h3 className="col-span-full">Tenemos { users.length } perfiles</h3>
+        <h3 className="col-span-full">Tenemos { users?.length } perfiles</h3>
         { users.map(profile => <PublicProfile key={profile.id} user={profile} />) }
       </section>
     </>

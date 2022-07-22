@@ -1,7 +1,10 @@
-import { createContext, useState, useReducer, useEffect } from "react"
+import { createContext, useReducer, useEffect } from "react"
 import { useDarkMode } from "../hooks/useDarkMode";
-import { GithubUser, GithubRepo } from "../types"
+import { useFetchGithubRepos } from "../hooks/useFetchGithubRepos";
+import { useLanguage } from '../hooks/useLanguage'
+import { GithubUser, GithubRepo, Lang } from "../types"
 
+const GH_TOKEN = import.meta.env.VITE_GH_TOKEN;
 interface GlobalState {
   user: GithubUser | null
   repos: GithubRepo[]
@@ -57,10 +60,12 @@ interface ContextActions {
   setIsLoading: (isLoading: boolean) => void
   setError: (error: any) => void
   toggleMode: () => void
+  getRepos: () => void
 }
 
 type Context = {
   mode: "light" | "dark",
+  languages: Lang[],
 } & ContextActions & GlobalState
 
 export const GlobalContext = createContext({} as Context );
@@ -71,7 +76,8 @@ type GlobalProviderProps = {
 
 export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-
+  const { repos: newRepos, loading, error, getRepos } = useFetchGithubRepos(GH_TOKEN, { per_page: 100 })
+  const { languages } = useLanguage(state.repos);
   const [mode, toggleMode] = useDarkMode();
 
   const setUser = (user: GithubUser) => {
@@ -90,15 +96,27 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
     dispatch({ type: GlobalActionType.SET_ERROR, payload: error })
   }
 
+  useEffect(() => {
+    dispatch({ type: GlobalActionType.SET_REPOS, payload: newRepos })
+  }, [newRepos])
+  useEffect(() => {
+    dispatch({ type: GlobalActionType.TOGGLE_LOADING, payload: loading })
+  }, [loading])
+  useEffect(() => {
+    dispatch({ type: GlobalActionType.SET_ERROR, payload: error })
+  }, [error])
+
   const fullContext = {
     ...state,
     mode,
+    languages,
     toggleMode,
     setUser,
     setUsers,
     setRepos,
     setIsLoading,
     setError,
+    getRepos,
   }
   
   return (
