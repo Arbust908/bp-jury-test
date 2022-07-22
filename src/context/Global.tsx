@@ -53,17 +53,15 @@ const initialState: GlobalState = {
 interface ContextActions {
   setUser: (user: GithubUser) => void
   setUsers: (users: GithubUser[]) => void
-  // setRepos: (repos: GithubRepo[]) => void
-  // setIsLoading: (isLoading: boolean) => void
-  // setError: (error: any) => void
+  setRepos: (repos: GithubRepo[]) => void
+  setIsLoading: (isLoading: boolean) => void
+  setError: (error: any) => void
   toggleMode: () => void
 }
 
 type Context = {
-  state: GlobalState,
-  users: GithubUser[],
   mode: "light" | "dark",
-} & ContextActions
+} & ContextActions & GlobalState
 
 export const GlobalContext = createContext({} as Context );
 
@@ -82,14 +80,25 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   const setUsers = (users: GithubUser[]) => {
     dispatch({ type: GlobalActionType.SET_USERS, payload: users })
   }
+  const setRepos = (repos: GithubRepo[]) => {
+    dispatch({ type: GlobalActionType.SET_REPOS, payload: repos })
+  }
+  const setIsLoading = (isLoading: boolean) => {
+    dispatch({ type: GlobalActionType.TOGGLE_LOADING, payload: isLoading })
+  }
+  const setError = (error: any) => {
+    dispatch({ type: GlobalActionType.SET_ERROR, payload: error })
+  }
 
   const fullContext = {
-    state,
-    users: state.users,
+    ...state,
     mode,
     toggleMode,
     setUser,
     setUsers,
+    setRepos,
+    setIsLoading,
+    setError,
   }
   
   return (
