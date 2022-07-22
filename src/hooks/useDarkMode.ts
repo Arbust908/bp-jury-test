@@ -4,9 +4,10 @@ const useDarkMode = () => {
   const [theme, setTheme] = useState<"light" | "dark">("light");
 
   const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-    window.localStorage.setItem("theme", theme);
-    if (theme === "light") {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    window.localStorage.setItem("theme", newTheme);
+    if (newTheme === "light") {
       document.getElementsByTagName("html")[0].classList.remove("dark");
     } else {
       document.getElementsByTagName("html")[0].classList.add("dark");
@@ -15,9 +16,7 @@ const useDarkMode = () => {
 
   useEffect(() => {
     const savedMode = window.localStorage.getItem("theme");
-    console.log("savedMode", savedMode)
     if (savedMode && savedMode !== theme) {
-      console.log(theme, savedMode)
       toggleTheme();
     }
   }, []);

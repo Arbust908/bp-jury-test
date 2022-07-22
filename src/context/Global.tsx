@@ -10,25 +10,32 @@ interface GlobalState {
   error: any | null
   mode: "light" | "dark"
 }
+enum GlobalActionType {
+  SET_USER = "SET_USER",
+  SET_USERS = "SET_USERS",
+  SET_REPOS = "SET_REPOS",
+  TOGGLE_LOADING = "TOGGLE_LOADING",
+  SET_ERROR = "SET_ERROR"
+}
 interface GlobalAction {
-  type: string
+  type: GlobalActionType
   payload?: any
 }
 
 function reducer(actualState: GlobalState, action: GlobalAction): GlobalState {
-  switch (action.type) {
-    case "SET_USER":
-      return { ...actualState, user: action.payload }
-    case "SET_USERS":
-      return { ...actualState, users: action.payload }
-    case "SET_REPOS":
-      return { ...actualState, repos: action.payload }
-    case "TOGGLE_LOADING":
+  const { type, payload } = action
+  const { SET_USER, SET_USERS, SET_REPOS, TOGGLE_LOADING, SET_ERROR } = GlobalActionType
+  switch (type) {
+    case SET_USER:
+      return { ...actualState, user: payload }
+    case SET_USERS:
+      return { ...actualState, users: payload }
+    case SET_REPOS:
+      return { ...actualState, repos: payload }
+    case TOGGLE_LOADING:
       return { ...actualState, isLoading: !actualState.isLoading }
-    case "SET_ERROR":
-      return { ...actualState, error: action.payload }
-    case "TOGGLE_MODE":
-      return { ...actualState, mode: actualState.mode === "light" ? "dark" : "light" }
+    case SET_ERROR:
+      return { ...actualState, error: payload }
     default:
       return actualState
   }
@@ -45,7 +52,7 @@ const initialState: GlobalState = {
 
 interface ContextActions {
   setUser: (user: GithubUser) => void
-  // setUsers: (users: GithubUser[]) => void
+  setUsers: (users: GithubUser[]) => void
   // setRepos: (repos: GithubRepo[]) => void
   // setIsLoading: (isLoading: boolean) => void
   // setError: (error: any) => void
@@ -54,6 +61,7 @@ interface ContextActions {
 
 type Context = {
   state: GlobalState,
+  users: GithubUser[],
   mode: "light" | "dark",
 } & ContextActions
 
@@ -69,14 +77,19 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
   const [mode, toggleMode] = useDarkMode();
 
   const setUser = (user: GithubUser) => {
-    dispatch({ type: "SET_USER", payload: user })
+    dispatch({ type: GlobalActionType.SET_USER, payload: user })
+  }
+  const setUsers = (users: GithubUser[]) => {
+    dispatch({ type: GlobalActionType.SET_USERS, payload: users })
   }
 
   const fullContext = {
     state,
+    users: state.users,
     mode,
     toggleMode,
     setUser,
+    setUsers,
   }
   
   return (
