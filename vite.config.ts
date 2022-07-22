@@ -16,7 +16,15 @@ export default defineConfig({
           'display': 'inline-block',
           'vertical-align': 'middle',
           },
-        })],
+        })
+      ],
+      rules: [
+        // [/^icon-(\d+)$/, ([, d]) => ({ margin: `${d / 4}rem` })],
+      ],
+      shortcuts: [
+        [/^icon-(\d+)$/, ([, d]) => `w-${d} h-${d}`],
+        {'flex-mid': 'flex justify-center align-center'},
+      ],
       safelist: [
         'i-logos:php',
         'i-logos:javascript',

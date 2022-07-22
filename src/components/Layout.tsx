@@ -1,10 +1,7 @@
 import { useContext } from 'react';
-import { Link, useMatch, useResolvedPath } from 'react-router-dom'
+import { Link, useMatch } from 'react-router-dom'
 import { GlobalContext } from '../context/Global';
 
-type LayoutProps = {
-  children: React.ReactNode
-}
 type NavLinkProps = {
   children: React.ReactNode
   to: string
@@ -23,6 +20,10 @@ function NavLink({ children, to }: NavLinkProps) {
     </li>)
 }
 
+type LayoutProps = {
+  children: React.ReactNode
+}
+
 function Layout({ children}: LayoutProps) {
   const { mode, toggleMode } = useContext(GlobalContext);
 
@@ -39,7 +40,7 @@ function Layout({ children}: LayoutProps) {
           className="border-none bg-transparent text-slate-600 dark:text-slate-400 cursor-pointer text-4xl"
         >
           <i className={`${mode === 'dark' ? 'i-ic:round-toggle-off' : 'i-ic:round-toggle-on'}`} />
-          <i className={`${mode === 'dark' ? 'i-ic:round-wb-sunny' : 'i-ic:round-nightlight'}`} />
+          <i className={`${mode === 'dark' ? 'i-ic:round-wb-sunny' : 'i-ic:round-nightlight'} icon-6`} />
         </button>
         <ul className='list-none m-0 px-0 py-2 space-y-2'>
           <NavLink to='/projects'>Projects</NavLink>

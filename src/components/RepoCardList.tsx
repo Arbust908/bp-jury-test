@@ -2,7 +2,7 @@ import RepoCard from './RepoCard'
 import type { GithubRepo } from '../types'
 
 type Props = {
-  repos?: GithubRepo[],
+  repos: GithubRepo[],
   loading?: boolean,
   error?: Error | null
 }
